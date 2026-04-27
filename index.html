@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#003366">
+  <meta name="theme-color" content="#0a2540">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="logo.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Dode Elia Enterprises | Professional POS System</title>
   <style>
     :root {
@@ -275,10 +276,10 @@
       max-height: 90vh;
       overflow-y: auto;
     }
-    .modal-header { padding: 1.25rem; border-bottom: 1px solid var(--gray-light); }
+    .modal-header { padding: 1.25rem; border-bottom: 1px solid var(--gray-light); display: flex; justify-content: space-between; align-items: center; }
     .modal-body { padding: 1.25rem; }
     .modal-footer { padding: 1.25rem; border-top: 1px solid var(--gray-light); display: flex; gap: 0.75rem; justify-content: flex-end; }
-    .close { position: absolute; right: 1.25rem; top: 1.25rem; font-size: 1.5rem; cursor: pointer; color: var(--gray); }
+    .close { font-size: 1.5rem; cursor: pointer; color: var(--gray); }
     .keypad-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin: 1rem 0; }
     .keypad-btn {
       padding: 1rem;
@@ -393,7 +394,7 @@
     </div>
   </div>
 
-  <div id="branchModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('branchModal')">&times;</span><div class="modal-header"><h3>Select Branch</h3></div><div class="modal-body"><select id="branchSelect" style="width:100%;"></select></div><div class="modal-footer"><button class="btn btn-primary" onclick="confirmBranch()">Continue</button></div></div></div>
+  <div id="branchModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Select Branch</h3><span class="close" onclick="closeModal('branchModal')">&times;</span></div><div class="modal-body"><select id="branchSelect" style="width:100%;"></select></div><div class="modal-footer"><button class="btn btn-primary" onclick="confirmBranch()">Continue</button></div></div></div>
 
   <div id="reportsPanel" class="reports-panel">
     <div class="reports-header"><h2 style="font-size:1.25rem;">Sales & Variance Reports</h2><button class="btn btn-outline" onclick="closeReports()">Close</button></div>
@@ -480,14 +481,14 @@
     <div id="offlineIndicator" class="offline-indicator"><i class="fas fa-wifi-slash"></i> Offline Mode</div>
   </div>
 
-  <div id="cashModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('cashModal')">&times;</span><div class="modal-header"><h3>Cash Payment</h3></div><div class="modal-body"><div style="text-align:center;margin-bottom:1rem;"><div style="font-size:0.875rem;">Total Due</div><div id="cashTotalDue" style="font-size:2rem;font-weight:700;color:var(--primary);">$0.00</div></div><div class="quantity-display-large" id="cashReceivedDisplay">0</div><div class="keypad-grid"><button class="keypad-btn" onclick="cashKeypadInput('1')">1</button><button class="keypad-btn" onclick="cashKeypadInput('2')">2</button><button class="keypad-btn" onclick="cashKeypadInput('3')">3</button><button class="keypad-btn" onclick="cashKeypadInput('4')">4</button><button class="keypad-btn" onclick="cashKeypadInput('5')">5</button><button class="keypad-btn" onclick="cashKeypadInput('6')">6</button><button class="keypad-btn" onclick="cashKeypadInput('7')">7</button><button class="keypad-btn" onclick="cashKeypadInput('8')">8</button><button class="keypad-btn" onclick="cashKeypadInput('9')">9</button><button class="keypad-btn clear" onclick="cashKeypadClear()">C</button><button class="keypad-btn" onclick="cashKeypadInput('0')">0</button><button class="keypad-btn" onclick="cashKeypadInput('.')">.</button><button class="keypad-btn enter" onclick="cashKeypadEnter()">Enter</button></div><div id="changeDisplay" style="display:none;text-align:center;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;"><div>Change</div><div id="changeAmount" style="font-size:1.5rem;font-weight:700;"></div></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashModal')">Cancel</button><button class="btn btn-success" id="confirmCashBtn" onclick="confirmCashPayment()" disabled>Confirm</button></div></div></div>
+  <div id="cashModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Cash Payment</h3><span class="close" onclick="closeModal('cashModal')">&times;</span></div><div class="modal-body"><div style="text-align:center;margin-bottom:1rem;"><div style="font-size:0.875rem;">Total Due</div><div id="cashTotalDue" style="font-size:2rem;font-weight:700;color:var(--primary);">$0.00</div></div><div class="quantity-display-large" id="cashReceivedDisplay">0</div><div class="keypad-grid"><button class="keypad-btn" onclick="cashKeypadInput('1')">1</button><button class="keypad-btn" onclick="cashKeypadInput('2')">2</button><button class="keypad-btn" onclick="cashKeypadInput('3')">3</button><button class="keypad-btn" onclick="cashKeypadInput('4')">4</button><button class="keypad-btn" onclick="cashKeypadInput('5')">5</button><button class="keypad-btn" onclick="cashKeypadInput('6')">6</button><button class="keypad-btn" onclick="cashKeypadInput('7')">7</button><button class="keypad-btn" onclick="cashKeypadInput('8')">8</button><button class="keypad-btn" onclick="cashKeypadInput('9')">9</button><button class="keypad-btn clear" onclick="cashKeypadClear()">C</button><button class="keypad-btn" onclick="cashKeypadInput('0')">0</button><button class="keypad-btn" onclick="cashKeypadInput('.')">.</button><button class="keypad-btn enter" onclick="cashKeypadEnter()">Enter</button></div><div id="changeDisplay" style="display:none;text-align:center;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;"><div>Change</div><div id="changeAmount" style="font-size:1.5rem;font-weight:700;"></div></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashModal')">Cancel</button><button class="btn btn-success" id="confirmCashBtn" onclick="confirmCashPayment()" disabled>Confirm</button></div></div></div>
 
-  <div id="cashupModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('cashupModal')">&times;</span><div class="modal-header"><h3>Cash Up</h3></div><div class="modal-body"><div id="cashupExpected" style="margin-bottom:1rem;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;">Expected: ****</div><div class="form-row"><label>Cash at Hand</label><input type="number" id="cashAtHandInput" step="0.01" placeholder="0.00"></div><div class="form-row"><label>Bank / Card Settlement</label><input type="number" id="bankInput" step="0.01" placeholder="0.00"></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashupModal')">Cancel</button><button class="btn btn-success" onclick="completeCashup()">Complete Cashup</button></div></div></div>
+  <div id="cashupModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Cash Up</h3><span class="close" onclick="closeModal('cashupModal')">&times;</span></div><div class="modal-body"><div id="cashupExpected" style="margin-bottom:1rem;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;">Expected: ****</div><div class="form-row"><label>Cash at Hand</label><input type="number" id="cashAtHandInput" step="0.01" placeholder="0.00"></div><div class="form-row"><label>Bank / Card Settlement</label><input type="number" id="bankInput" step="0.01" placeholder="0.00"></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashupModal')">Cancel</button><button class="btn btn-success" onclick="completeCashup()">Complete Cashup</button></div></div></div>
 
-  <div id="saleDetailModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('saleDetailModal')">&times;</span><div class="modal-header"><h3>Receipt Details</h3></div><div class="modal-body" id="saleDetailBody"></div><div class="modal-footer"><button class="btn btn-primary" onclick="downloadReceiptPDF()">Download PDF</button><button class="btn btn-outline" onclick="closeModal('saleDetailModal')">Close</button></div></div></div>
+  <div id="saleDetailModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Receipt Details</h3><span class="close" onclick="closeModal('saleDetailModal')">&times;</span></div><div class="modal-body" id="saleDetailBody"></div><div class="modal-footer"><button class="btn btn-primary" onclick="downloadReceiptPDF()">Download PDF</button><button class="btn btn-outline" onclick="closeModal('saleDetailModal')">Close</button></div></div></div>
 
-  <div id="alertModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle">Notice</h3></div><div class="modal-body"><p id="modalMessage"></p></div><div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('alertModal')">OK</button></div></div></div>
-  <div id="confirmModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="confirmTitle">Confirm</h3></div><div class="modal-body"><p id="confirmMessage"></p></div><div class="modal-footer"><button class="btn btn-danger" onclick="confirmCancel()">Cancel</button><button class="btn btn-success" onclick="confirmOK()">Confirm</button></div></div></div>
+  <div id="alertModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle">Notice</h3><span class="close" onclick="closeModal('alertModal')">&times;</span></div><div class="modal-body"><p id="modalMessage"></p></div><div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('alertModal')">OK</button></div></div></div>
+  <div id="confirmModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="confirmTitle">Confirm</h3><span class="close" onclick="closeModal('confirmModal')">&times;</span></div><div class="modal-body"><p id="confirmMessage"></p></div><div class="modal-footer"><button class="btn btn-danger" onclick="confirmCancel()">Cancel</button><button class="btn btn-success" onclick="confirmOK()">Confirm</button></div></div></div>
 
   <script>
     const ACCOUNTS_API_ENDPOINT = "https://script.google.com/macros/s/AKfycbwNH08Lc7N1PLcohrKY8reoL5RDZYD3AUE0eApuNeILQ0-1sPDf5B6eS_-BuQWxfvEl/exec";
@@ -630,7 +631,7 @@
     }
 
     async function loadAllSales() { const sales=await getFromDB('sales'); allSales=Array.isArray(sales)?sales:Object.values(sales||{}); const cashups=await getFromDB('cashups'); allCashups=Array.isArray(cashups)?cashups:Object.values(cashups||{}); renderSalesTable(allSales.filter(s=>s)); renderVarianceTable(); }
-    function renderSalesTable(sales) { const tbody=document.getElementById("salesTableBody"); if(!tbody) return; let sumExcl=0, sumVat=0, sumIncl=0, sumProfit=0; tbody.innerHTML=sales.slice(0,200).map(s=>{ sumExcl+=s.total_excl||0; sumVat+=s.total_vat||0; sumIncl+=s.total_incl||0; sumProfit+=s.profit||0; return `<tr onclick="showSaleDetail('${s.receipt_no}')"><tr>${s.receipt_no}</td>${s.date}</td>${s.cashier}</td>${s.customer?.name||'Walk-in'}</td>${formatCurrency(s.total_excl,s.currency)}</td><td>${formatCurrency(s.total_vat,s.currency)}</td><td>${formatCurrency(s.total_incl,s.currency)}</td></tr>`; }).join(''); document.getElementById("summaryExcl").innerHTML=formatCurrency(sumExcl); document.getElementById("summaryVat").innerHTML=formatCurrency(sumVat); document.getElementById("summaryIncl").innerHTML=formatCurrency(sumIncl); document.getElementById("summaryProfit").innerHTML=formatCurrency(sumProfit); }
+    function renderSalesTable(sales) { const tbody=document.getElementById("salesTableBody"); if(!tbody) return; let sumExcl=0, sumVat=0, sumIncl=0, sumProfit=0; tbody.innerHTML=sales.slice(0,200).map(s=>{ sumExcl+=s.total_excl||0; sumVat+=s.total_vat||0; sumIncl+=s.total_incl||0; sumProfit+=s.profit||0; return `<tr onclick="showSaleDetail('${s.receipt_no}')"><td>${s.receipt_no}</td><td>${s.date}</td><td>${s.cashier}</td><td>${s.customer?.name||'Walk-in'}</td><td>${formatCurrency(s.total_excl,s.currency)}</td><td>${formatCurrency(s.total_vat,s.currency)}</td><td>${formatCurrency(s.total_incl,s.currency)}</td></tr>`; }).join(''); document.getElementById("summaryExcl").innerHTML=formatCurrency(sumExcl); document.getElementById("summaryVat").innerHTML=formatCurrency(sumVat); document.getElementById("summaryIncl").innerHTML=formatCurrency(sumIncl); document.getElementById("summaryProfit").innerHTML=formatCurrency(sumProfit); }
     function renderVarianceTable() { const tbody=document.getElementById("varianceTableBody"); if(!tbody) return; tbody.innerHTML=allCashups.slice(0,100).map(c=>{ const varClass=c.variance>=0?'variance-positive':'variance-negative'; const sign=c.variance>=0?'+':''; return `<tr><td>${c.date}</td><td>${c.cashier}</td><td>${formatCurrency(c.expected)}</td><td>${formatCurrency(c.declared)}</td><td class="${varClass}">${sign}${formatCurrency(Math.abs(c.variance))}</td></tr>`; }).join(''); }
     async function showSaleDetail(receiptNo) { const sale=allSales.find(s=>s.receipt_no===receiptNo); if(!sale) return; currentSaleDetail=sale; const itemsHtml=sale.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:0.25rem 0;"><span>${escapeHtml(i.name)} x1</span><span>${formatCurrency(i.total,sale.currency)}</span></div>`).join(''); document.getElementById("saleDetailBody").innerHTML=`<div><strong>Receipt:</strong> ${sale.receipt_no}</div><div><strong>Date:</strong> ${sale.date} ${sale.time}</div><div><strong>Cashier:</strong> ${sale.cashier}</div><div><strong>Customer:</strong> ${sale.customer?.name||'Walk-in'}</div><hr>${itemsHtml}<hr><div><strong>Subtotal Excl. VAT:</strong> ${formatCurrency(sale.total_excl,sale.currency)}</div><div><strong>VAT (15.5%):</strong> ${formatCurrency(sale.total_vat,sale.currency)}</div><div><strong>Total:</strong> ${formatCurrency(sale.total_incl,sale.currency)}</div><div><strong>Payment:</strong> ${sale.payment_method}</div>${sale.payment_method==='CASH'?`<div><strong>Cash Received:</strong> ${formatCurrency(sale.cash_received,sale.currency)}</div><div><strong>Change:</strong> ${formatCurrency(sale.change,sale.currency)}</div>`:''}<hr><div><strong>Banking Details:</strong></div><div>${BANK_NAME}: ${BANK_ACCOUNT_NAME}</div><div>Account: ${BANK_ACCOUNT_NUMBER}</div><div>Branch: ${BANK_BRANCH}</div>`; document.getElementById("saleDetailModal").classList.add('show'); }
     async function downloadReceiptPDF() { if(currentSaleDetail) await generatePDFReceipt(currentSaleDetail); }
@@ -647,11 +648,101 @@
     async function attemptLogin(u,p) { const users=await getFromDB('users'); const user=(users||[]).find(us=>us.username===u && String(us.Password)===String(p)); if(!user) return { success:false }; if(user.Branch && user.Branch.includes(',')) return { success:true, user, branches:user.Branch.split(',').map(b=>b.trim()) }; return { success:true, user }; }
     function completeLogin(user) { currentUser=user; currentBranch=user.Branch||"Main"; localStorage.setItem("username",user.username); document.getElementById("loginContainer").style.display="none"; document.getElementById("appContainer").style.display="block"; document.getElementById("welcomeMessage").innerText=user.username; document.getElementById("userAvatar").innerText=user.username.charAt(0).toUpperCase(); if((user.Role||'').toLowerCase()==='admin') document.getElementById("reportBtn").style.display="inline-block"; document.getElementById("logoutBtn").onclick=()=>{ localStorage.clear(); location.reload(); }; loadAllSales(); updateSalesTarget(); }
 
-    document.addEventListener('DOMContentLoaded',async()=>{ await initIndexedDB(); await loadUsersFromAPI(); const saved=localStorage.getItem("username"); if(saved){ const users=await getFromDB('users'); const found=users.find(u=>u.username===saved); if(found) completeLogin(found); } document.getElementById("syncStatus").style.display="none"; window.addEventListener('online',()=>document.getElementById("offlineIndicator").style.display="none"); window.addEventListener('offline',()=>document.getElementById("offlineIndicator").style.display="block"); });
+    document.addEventListener('DOMContentLoaded',async()=>{ 
+      await initIndexedDB();
+      
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+              console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker registration failed:', error);
+            });
+        });
+      }
+      
+      await loadUsersFromAPI(); 
+      const saved=localStorage.getItem("username"); 
+      if(saved){ 
+        const users=await getFromDB('users'); 
+        const found=users.find(u=>u.username===saved); 
+        if(found) completeLogin(found); 
+      } 
+      document.getElementById("syncStatus").style.display="none"; 
+      window.addEventListener('online',()=>document.getElementById("offlineIndicator").style.display="none"); 
+      window.addEventListener('offline',()=>document.getElementById("offlineIndicator").style.display="block"); 
+    });
+
     document.getElementById("loginForm").addEventListener("submit",async(e)=>{ e.preventDefault(); const u=document.getElementById("username").value.trim(); const p=document.getElementById("password").value.trim(); const err=document.getElementById("error-msg"); const result=await attemptLogin(u,p); if(result.success){ if(result.branches){ window._branchUser=result.user; document.getElementById("branchSelect").innerHTML=result.branches.map(b=>`<option>${b}</option>`).join(''); document.getElementById("branchModal").classList.add('show'); } else { completeLogin(result.user); } } else { err.style.display="block"; } });
     window.confirmBranch=()=>{ const branch=document.getElementById("branchSelect").value; if(window._branchUser){ window._branchUser.Branch=branch; completeLogin(window._branchUser); window._branchUser=null; } closeModal('branchModal'); };
 
     window.addManualItemToCart=addManualItemToCart; window.completeSale=completeSale; window.removeFromCart=removeFromCart; window.setCurrency=setCurrency; window.setPaymentMethod=setPaymentMethod; window.openReports=openReports; window.closeReports=closeReports; window.switchView=switchView; window.applyFilters=applyFilters; window.openCashup=openCashup; window.completeCashup=completeCashup; window.cashKeypadInput=cashKeypadInput; window.cashKeypadClear=cashKeypadClear; window.cashKeypadEnter=cashKeypadEnter; window.confirmCashPayment=confirmCashPayment; window.confirmOK=confirmOK; window.confirmCancel=confirmCancel; window.closeModal=closeModal; window.exportSalesReport=exportSalesReport; window.showSaleDetail=showSaleDetail; window.downloadReceiptPDF=downloadReceiptPDF;
+  </script>
+
+  <!-- PWA Install Prompt -->
+  <script>
+    let deferredPrompt;
+    const installBanner = document.createElement('div');
+    installBanner.id = 'pwaInstallBanner';
+    installBanner.style.cssText = `
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      padding: 1rem 1.5rem;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      max-width: 90%;
+      width: 400px;
+      border: 2px solid var(--primary);
+    `;
+    installBanner.innerHTML = `
+      <div style="flex:1;">
+        <div style="font-weight:600;color:var(--primary);margin-bottom:0.25rem;">Install Dode Elia POS</div>
+        <div style="font-size:0.8rem;color:var(--gray);">Install for quick access and offline use</div>
+      </div>
+      <button id="pwaInstallBtn" style="padding:0.5rem 1rem;background:var(--primary);color:white;border:none;border-radius:0.5rem;font-weight:600;cursor:pointer;white-space:nowrap;">Install</button>
+      <button id="pwaDismissBtn" style="padding:0.5rem;background:none;border:none;color:var(--gray);cursor:pointer;font-size:1.25rem;">&times;</button>
+    `;
+    document.body.appendChild(installBanner);
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+      console.log('PWA already installed');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.style.display = 'flex';
+    });
+
+    document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to install prompt: ${outcome}`);
+      deferredPrompt = null;
+      installBanner.style.display = 'none';
+    });
+
+    document.getElementById('pwaDismissBtn').addEventListener('click', () => {
+      installBanner.style.display = 'none';
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installBanner.style.display = 'none';
+      deferredPrompt = null;
+      console.log('PWA installed successfully');
+    });
   </script>
 </body>
 </html>
