@@ -1,0 +1,27 @@
+{
+  "name": "Dode Elia Enterprises POS System",
+  "short_name": "Dode Elia POS",
+  "description": "Professional Point of Sale System for Dode Elia Enterprises - manage sales, invoices, cashups and reports",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a2540",
+  "theme_color": "#0a2540",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "prefer_related_applications": false
+}
