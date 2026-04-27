@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#003366">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Dode Elia Enterprises | Professional POS System</title>
+  <style>
+    :root {
+      --primary: #0a2540;
+      --primary-light: #1a3a5c;
+      --secondary: #2c7a4d;
+      --danger: #c62828;
+      --warning: #ed6c02;
+      --light: #f8f9fa;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+      --border-radius: 0.5rem;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f1f5f9;
+      color: var(--dark);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, #1a4a7a 100%);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+    }
+    .login-header { text-align: center; margin-bottom: 2rem; }
+    .login-logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1rem;
+      background: var(--primary);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+    .login-title { font-size: 1.5rem; font-weight: 600; color: var(--dark); margin-bottom: 0.25rem; }
+    .login-subtitle { color: var(--gray); font-size: 0.875rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem; color: var(--dark); }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      font-size: 0.9375rem;
+      transition: all 0.2s;
+      background: white;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(10,37,64,0.1);
+    }
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9375rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-primary { background-color: var(--primary); color: white; }
+    .btn-primary:hover { background-color: var(--primary-light); transform: translateY(-1px); }
+    .btn-danger { background-color: var(--danger); color: white; }
+    .btn-success { background-color: var(--secondary); color: white; }
+    .btn-warning { background-color: var(--warning); color: white; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: white; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    #appContainer { display: none; min-height: 100vh; position: relative; }
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 0.875rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo span { font-weight: 600; font-size: 1.1rem; }
+    .user-info { display: flex; align-items: center; gap: 0.75rem; }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    .logout-btn, .report-btn, .cashup-btn {
+      padding: 0.4rem 0.875rem;
+      background-color: rgba(255,255,255,0.15);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.8125rem;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 768px) { .container { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; } }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--gray-light);
+      background: #fafcfd;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; color: var(--primary); letter-spacing: -0.01em; }
+    .card-body { padding: 1.25rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .add-item-btn { width: 100%; margin-top: 0.5rem; }
+    .customer-section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-light);
+    }
+    .customer-section h4 { font-size: 0.875rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
+    .selector-group { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
+    .selector-btn {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1.5px solid var(--gray-light);
+      background: white;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .selector-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .cart-items { max-height: 280px; overflow-y: auto; margin: 1rem 0; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { font-weight: 500; font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .cart-item-meta { font-size: 0.75rem; color: var(--gray); }
+    .delete-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #fee2e2;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--danger);
+    }
+    .cart-item-total { font-weight: 600; color: var(--primary); margin-left: 1rem; font-size: 0.875rem; }
+    .cart-total { font-size: 1.25rem; font-weight: 700; padding-top: 1rem; border-top: 2px solid var(--primary); text-align: right; color: var(--primary); }
+    .vat-breakdown { font-size: 0.8rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--gray-light); }
+    .vat-row { display: flex; justify-content: space-between; margin: 0.25rem 0; }
+    .target-tracker {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .target-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.875rem; }
+    .target-progress-bar { height: 8px; background: rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; }
+    .target-progress-fill { height: 100%; background: var(--secondary); border-radius: 4px; transition: width 0.3s ease; }
+    .reports-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #f1f5f9;
+      z-index: 200;
+      overflow-y: auto;
+      display: none;
+    }
+    .reports-panel.show { display: block; }
+    .reports-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-bottom: 1px solid var(--gray-light);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .filter-bar input, .filter-bar select { width: auto; min-width: 150px; }
+    .sales-table-container {
+      background: white;
+      margin: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      overflow-x: auto;
+    }
+    .sales-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; cursor: pointer; }
+    .sales-table th { background: var(--primary); color: white; padding: 0.75rem; text-align: left; font-weight: 500; }
+    .sales-table td { padding: 0.75rem; border-bottom: 1px solid var(--gray-light); }
+    .sales-table tr:hover { background: #f1f5f9; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show, .modal.active { display: flex; }
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header { padding: 1.25rem; border-bottom: 1px solid var(--gray-light); }
+    .modal-body { padding: 1.25rem; }
+    .modal-footer { padding: 1.25rem; border-top: 1px solid var(--gray-light); display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .close { position: absolute; right: 1.25rem; top: 1.25rem; font-size: 1.5rem; cursor: pointer; color: var(--gray); }
+    .keypad-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin: 1rem 0; }
+    .keypad-btn {
+      padding: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.75rem;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+    }
+    .keypad-btn:active { transform: scale(0.96); }
+    .keypad-btn.clear { background: var(--danger); }
+    .keypad-btn.enter { background: var(--secondary); grid-column: span 2; }
+    .quantity-display-large {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 1rem;
+      background: var(--gray-light);
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      z-index: 100;
+    }
+    .footer-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--gray);
+      font-size: 0.7rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+    }
+    .footer-item.active { color: var(--primary); background: rgba(10,37,64,0.08); }
+    .footer-icon { font-size: 1.25rem; margin-bottom: 0.25rem; }
+    .full-block-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .full-block-overlay.show { display: flex; }
+    .block-content {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      max-width: 350px;
+    }
+    .block-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--gray-light);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 0.6s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .offline-indicator {
+      position: fixed;
+      bottom: 80px;
+      right: 1rem;
+      background: var(--danger);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      z-index: 1000;
+      display: none;
+    }
+    .error-msg { color: var(--danger); font-size: 0.875rem; margin-top: 0.5rem; display: none; text-align: center; }
+    .variance-positive { color: var(--secondary); }
+    .variance-negative { color: var(--danger); }
+    hr { margin: 1rem 0; border: none; border-top: 1px solid var(--gray-light); }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div id="fullBlockOverlay" class="full-block-overlay"><div class="block-content"><div class="block-spinner"></div><h3 style="margin-bottom:0.5rem;">Processing Transaction</h3><p id="fullBlockMessage">Please wait...</p><p style="font-size:0.75rem;color:var(--danger);margin-top:1rem;">Do not close or refresh</p></div></div>
+
+  <div class="login-container" id="loginContainer">
+    <div class="login-card">
+      <div class="login-header"><div class="login-logo">DE</div><h1 class="login-title">Dode Elia Enterprises</h1><p class="login-subtitle">Professional Point of Sale System</p></div>
+      <form id="loginForm">
+        <div class="form-group"><label>Username</label><input type="text" id="username" required autocomplete="off"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password" required></div>
+        <p id="error-msg" class="error-msg">Invalid credentials</p>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+      </form>
+      <div id="syncStatus" style="margin-top:1rem;text-align:center;font-size:0.75rem;color:var(--gray);"><i class="fas fa-sync-alt fa-spin"></i> Loading accounts...</div>
+    </div>
+  </div>
+
+  <div id="branchModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('branchModal')">&times;</span><div class="modal-header"><h3>Select Branch</h3></div><div class="modal-body"><select id="branchSelect" style="width:100%;"></select></div><div class="modal-footer"><button class="btn btn-primary" onclick="confirmBranch()">Continue</button></div></div></div>
+
+  <div id="reportsPanel" class="reports-panel">
+    <div class="reports-header"><h2 style="font-size:1.25rem;">Sales & Variance Reports</h2><button class="btn btn-outline" onclick="closeReports()">Close</button></div>
+    <div class="filter-bar">
+      <input type="date" id="startDate"><input type="date" id="endDate">
+      <button class="btn btn-primary" onclick="applyFilters()">Filter</button>
+      <button class="btn btn-success" onclick="exportSalesReport()">Export CSV</button>
+    </div>
+    <div class="sales-table-container">
+      <table class="sales-table">
+        <thead><tr><th>Receipt No.</th><th>Date</th><th>Cashier</th><th>Customer</th><th>Excl. VAT</th><th>VAT</th><th>Total</th></tr></thead>
+        <tbody id="salesTableBody"></tbody>
+      </table>
+    </div>
+    <div style="margin:0 1.5rem 1rem 1.5rem; padding:1rem; background:white; border-radius:0.75rem;">
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; text-align:center;">
+        <div><strong style="color:var(--primary);">Total Sales (Excl. VAT)</strong><br><span id="summaryExcl">$0.00</span></div>
+        <div><strong style="color:var(--primary);">Total VAT Collected</strong><br><span id="summaryVat">$0.00</span></div>
+        <div><strong style="color:var(--primary);">Total Revenue</strong><br><span id="summaryIncl">$0.00</span></div>
+        <div><strong style="color:var(--primary);">Total Profit</strong><br><span id="summaryProfit">$0.00</span></div>
+      </div>
+    </div>
+    <div style="margin:0 1.5rem 1.5rem 1.5rem; padding:1rem; background:white; border-radius:0.75rem;">
+      <h3 style="font-size:1rem; margin-bottom:1rem;">Cashup Variance History</h3>
+      <div class="sales-table-container" style="margin:0;">
+        <table class="sales-table">
+          <thead><tr><th>Date</th><th>Cashier</th><th>Expected</th><th>Declared</th><th>Variance</th></tr></thead>
+          <tbody id="varianceTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="appContainer">
+    <header>
+      <div class="header-logo"><span>Dode Elia Enterprises</span></div>
+      <div class="user-info"><span id="welcomeMessage"></span><div class="avatar" id="userAvatar">A</div><button class="cashup-btn" onclick="openCashup()">Cashup</button><button class="report-btn" id="reportBtn" onclick="openReports()">Reports</button><button class="logout-btn" id="logoutBtn">Logout</button></div>
+    </header>
+    <div class="container">
+      <div class="card">
+        <div class="card-header"><h2 class="card-title">Service Entry</h2></div>
+        <div class="card-body">
+          <div class="form-row"><label>Description of Service</label><input type="text" id="manualDesc" placeholder="e.g., Consulting Services" autocomplete="off"></div>
+          <div class="form-row-inline">
+            <div class="form-row"><label>Cost (Expense)</label><input type="number" id="manualCost" step="0.01" placeholder="0.00"></div>
+            <div class="form-row"><label>Amount Received</label><input type="number" id="manualPrice" step="0.01" placeholder="0.00"></div>
+          </div>
+          <div class="form-row"><label>VAT Rate (%)</label><input type="number" id="manualTax" step="0.01" placeholder="15.5" value="15.5"></div>
+          <button class="btn btn-primary add-item-btn" onclick="addManualItemToCart()"><i class="fas fa-plus"></i> Add to Cart</button>
+          <div class="customer-section"><h4>Customer Information</h4>
+            <div class="form-row"><label>Customer Name <span style="color:var(--danger);">*</span></label><input type="text" id="customerName" value="Walk-in Customer"></div>
+            <div class="form-row-inline">
+              <div class="form-row"><label>TIN Number</label><input type="text" id="customerTin"></div>
+              <div class="form-row"><label>VAT Number</label><input type="text" id="customerVat"></div>
+            </div>
+            <div class="form-row"><label>Address</label><input type="text" id="customerAddress"></div>
+            <div class="form-row-inline">
+              <div class="form-row"><label>Email</label><input type="email" id="customerEmail"></div>
+              <div class="form-row"><label>Phone</label><input type="tel" id="customerPhone"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="target-tracker"><div class="target-header"><span><i class="fas fa-chart-line"></i> Monthly Target: $1,000,000</span><span id="targetPercent">0%</span></div><div class="target-progress-bar"><div class="target-progress-fill" id="targetProgressFill"></div></div></div>
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">Current Invoice</h2></div>
+          <div class="card-body">
+            <div class="selector-group"><button class="selector-btn active" id="btnUSD" onclick="setCurrency('USD')">USD</button><button class="selector-btn" id="btnZWG" onclick="setCurrency('ZWG')">ZWG</button></div>
+            <div class="selector-group"><button class="selector-btn active" id="btnCash" onclick="setPaymentMethod('CASH')">Cash</button><button class="selector-btn" id="btnCard" onclick="setPaymentMethod('CARD')">Card</button></div>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-total" id="cart-total">Total: $0.00</div>
+            <div class="vat-breakdown" id="vatBreakdown"></div>
+            <button class="btn btn-success" onclick="completeSale()" style="width:100%; margin-top:1rem;" id="completeSaleBtn"><i class="fas fa-check-circle"></i> Complete Sale</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-item active" onclick="switchView('pos')"><i class="fas fa-home footer-icon"></i><span>POS</span></div>
+      <div class="footer-item" onclick="switchView('reports')"><i class="fas fa-chart-bar footer-icon"></i><span>Reports</span></div>
+      <div class="footer-item" onclick="openCashup()"><i class="fas fa-cash-register footer-icon"></i><span>Cashup</span></div>
+    </footer>
+    <div id="offlineIndicator" class="offline-indicator"><i class="fas fa-wifi-slash"></i> Offline Mode</div>
+  </div>
+
+  <div id="cashModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('cashModal')">&times;</span><div class="modal-header"><h3>Cash Payment</h3></div><div class="modal-body"><div style="text-align:center;margin-bottom:1rem;"><div style="font-size:0.875rem;">Total Due</div><div id="cashTotalDue" style="font-size:2rem;font-weight:700;color:var(--primary);">$0.00</div></div><div class="quantity-display-large" id="cashReceivedDisplay">0</div><div class="keypad-grid"><button class="keypad-btn" onclick="cashKeypadInput('1')">1</button><button class="keypad-btn" onclick="cashKeypadInput('2')">2</button><button class="keypad-btn" onclick="cashKeypadInput('3')">3</button><button class="keypad-btn" onclick="cashKeypadInput('4')">4</button><button class="keypad-btn" onclick="cashKeypadInput('5')">5</button><button class="keypad-btn" onclick="cashKeypadInput('6')">6</button><button class="keypad-btn" onclick="cashKeypadInput('7')">7</button><button class="keypad-btn" onclick="cashKeypadInput('8')">8</button><button class="keypad-btn" onclick="cashKeypadInput('9')">9</button><button class="keypad-btn clear" onclick="cashKeypadClear()">C</button><button class="keypad-btn" onclick="cashKeypadInput('0')">0</button><button class="keypad-btn" onclick="cashKeypadInput('.')">.</button><button class="keypad-btn enter" onclick="cashKeypadEnter()">Enter</button></div><div id="changeDisplay" style="display:none;text-align:center;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;"><div>Change</div><div id="changeAmount" style="font-size:1.5rem;font-weight:700;"></div></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashModal')">Cancel</button><button class="btn btn-success" id="confirmCashBtn" onclick="confirmCashPayment()" disabled>Confirm</button></div></div></div>
+
+  <div id="cashupModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('cashupModal')">&times;</span><div class="modal-header"><h3>Cash Up</h3></div><div class="modal-body"><div id="cashupExpected" style="margin-bottom:1rem;padding:0.75rem;background:var(--gray-light);border-radius:0.5rem;">Expected: ****</div><div class="form-row"><label>Cash at Hand</label><input type="number" id="cashAtHandInput" step="0.01" placeholder="0.00"></div><div class="form-row"><label>Bank / Card Settlement</label><input type="number" id="bankInput" step="0.01" placeholder="0.00"></div></div><div class="modal-footer"><button class="btn btn-danger" onclick="closeModal('cashupModal')">Cancel</button><button class="btn btn-success" onclick="completeCashup()">Complete Cashup</button></div></div></div>
+
+  <div id="saleDetailModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('saleDetailModal')">&times;</span><div class="modal-header"><h3>Receipt Details</h3></div><div class="modal-body" id="saleDetailBody"></div><div class="modal-footer"><button class="btn btn-primary" onclick="downloadReceiptPDF()">Download PDF</button><button class="btn btn-outline" onclick="closeModal('saleDetailModal')">Close</button></div></div></div>
+
+  <div id="alertModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle">Notice</h3></div><div class="modal-body"><p id="modalMessage"></p></div><div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('alertModal')">OK</button></div></div></div>
+  <div id="confirmModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="confirmTitle">Confirm</h3></div><div class="modal-body"><p id="confirmMessage"></p></div><div class="modal-footer"><button class="btn btn-danger" onclick="confirmCancel()">Cancel</button><button class="btn btn-success" onclick="confirmOK()">Confirm</button></div></div></div>
+
+  <script>
+    const ACCOUNTS_API_ENDPOINT = "https://script.google.com/macros/s/AKfycbwNH08Lc7N1PLcohrKY8reoL5RDZYD3AUE0eApuNeILQ0-1sPDf5B6eS_-BuQWxfvEl/exec";
+    const SALES_API_ENDPOINT = "https://script.google.com/macros/s/AKfycbyyZIWw6NFX5Av4lPWEsIC48-dFdhhJjf16beVwgelkTloIXjczjoIeBa5ptEjGewc/exec";
+    const DB_NAME = 'DodeEliaPOS';
+    const DB_VERSION = 3;
+    const USD_TO_ZWG_RATE = 32;
+    const SALES_TARGET = 1000000;
+    const DEFAULT_VAT = 15.5;
+    const COMPANY_NAME = "Dode Elia Enterprises";
+    const COMPANY_TIN = "1000223199";
+    const COMPANY_VAT = "220425670";
+    const COMPANY_ADDRESS = "PA Bezel Bridge, Mutare";
+    const COMPANY_PHONE = "0772908777";
+    const BANK_NAME = "ZB Bank";
+    const BANK_ACCOUNT_NAME = "E Dode Enterprise p/l";
+    const BANK_ACCOUNT_NUMBER = "453200277823200";
+    const BANK_BRANCH = "Mutare";
+
+    let db, cart = [], currentUser = null, currentBranch = "Main", displayCurrency = 'USD', selectedPaymentMethod = 'CASH';
+    let cashReceived = 0, changeAmount = 0, isProcessingSale = false;
+    let allSales = [], allCashups = [], currentSaleDetail = null;
+    let confirmResolve = null, cashInputStr = "0", pendingCashResolve = null, pendingCashTotal = 0;
+
+    function initIndexedDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onerror = () => reject(req.error); req.onsuccess = () => { db = req.result; resolve(db); }; req.onupgradeneeded = (e) => { db = e.target.result; if(!db.objectStoreNames.contains('sales')) db.createObjectStore('sales', { keyPath: 'receipt_no' }); if(!db.objectStoreNames.contains('users')) db.createObjectStore('users', { keyPath: 'username' }); if(!db.objectStoreNames.contains('cashups')) db.createObjectStore('cashups', { keyPath: 'id', autoIncrement: true }); }; }); }
+    async function getFromDB(store, key=null) { return new Promise((res,rej)=>{ const tx=db.transaction(store,'readonly'); const req=key?tx.objectStore(store).get(key):tx.objectStore(store).getAll(); req.onsuccess=()=>res(req.result||(key?null:[])); req.onerror=rej; }); }
+    async function saveToDB(store, data) { return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); const req=tx.objectStore(store).put(data); req.onsuccess=res; req.onerror=rej; }); }
+
+    async function loadUsersFromAPI() { try { const r = await fetch(ACCOUNTS_API_ENDPOINT); const d = await r.json(); if(d.success && d.data) { const tx=db.transaction('users','readwrite'); tx.objectStore('users').clear(); for(const user of d.data) await saveToDB('users', user); return d.data; } } catch(e) {} return await getFromDB('users'); }
+
+    function blockEverything(msg) { document.getElementById("fullBlockOverlay").classList.add('show'); document.getElementById("fullBlockMessage").innerText = msg; }
+    function unblockEverything() { document.getElementById("fullBlockOverlay").classList.remove('show'); }
+    function showAlert(title, msg) { return new Promise(resolve=>{ document.getElementById("modalTitle").innerText=title; document.getElementById("modalMessage").innerHTML=msg; document.getElementById("alertModal").classList.add('show'); window.alertResolve=resolve; }); }
+    function showConfirm(title, msg) { return new Promise(resolve=>{ document.getElementById("confirmTitle").innerText=title; document.getElementById("confirmMessage").innerText=msg; document.getElementById("confirmModal").classList.add('show'); confirmResolve=resolve; }); }
+    function confirmOK() { if(confirmResolve) confirmResolve(true); document.getElementById("confirmModal").classList.remove('show'); confirmResolve=null; }
+    function confirmCancel() { if(confirmResolve) confirmResolve(false); document.getElementById("confirmModal").classList.remove('show'); confirmResolve=null; }
+    function closeModal(id) { document.getElementById(id)?.classList.remove('show','active'); if(id==='alertModal' && window.alertResolve) { window.alertResolve(); window.alertResolve=null; } }
+
+    function formatCurrency(amt, currency=displayCurrency) { const val = currency==='USD'?amt:amt*USD_TO_ZWG_RATE; return `${currency==='USD'?'$':'Z$'}${val.toFixed(2)}`; }
+    function setCurrency(c) { displayCurrency=c; document.querySelectorAll('.selector-btn').forEach(b=>b.classList.remove('active')); document.getElementById(`btn${c}`).classList.add('active'); renderCart(); }
+    function setPaymentMethod(m) { selectedPaymentMethod=m; document.querySelectorAll('.selector-group .selector-btn').forEach(b=>b.classList.remove('active')); document.getElementById(`btn${m}`).classList.add('active'); }
+
+    function calculateItemVAT(item) { const rate = parseFloat(item.tax)||DEFAULT_VAT; if(rate<=0) return { amount:0, exclusive: item.total }; const excl = item.total/(1+rate/100); return { amount: item.total-excl, exclusive: excl }; }
+    function calculateCartVAT() { let excl=0, vat=0; cart.forEach(i=>{ const c=calculateItemVAT(i); excl+=c.exclusive; vat+=c.amount; }); return { exclusive:excl, vat, inclusive:excl+vat }; }
+    function renderCart() { const container=document.getElementById("cart-items"); if(!container) return; container.innerHTML=""; cart.forEach((item,idx)=>{ const div=document.createElement("div"); div.className="cart-item"; div.innerHTML=`<div class="cart-item-details"><div class="cart-item-name">${escapeHtml(item.name)}</div><div class="cart-item-meta">Amount: ${formatCurrency(item.price)} | Cost: ${formatCurrency(item.cost)} | VAT: ${item.tax}%</div></div><button class="delete-btn" onclick="removeFromCart(${idx})"><i class="fas fa-trash"></i></button><div class="cart-item-total">${formatCurrency(item.total)}</div>`; container.appendChild(div); }); const vc=calculateCartVAT(); document.getElementById("cart-total").innerHTML=`Total: ${formatCurrency(vc.inclusive)}`; document.getElementById("vatBreakdown").innerHTML=`<div class="vat-row"><span>Subtotal (Excl. VAT):</span><span>${formatCurrency(vc.exclusive)}</span></div><div class="vat-row"><span>VAT Amount (${DEFAULT_VAT}%):</span><span>${formatCurrency(vc.vat)}</span></div><div class="vat-row" style="font-weight:600;"><span>Total (Incl. VAT):</span><span>${formatCurrency(vc.inclusive)}</span></div>`; }
+    function removeFromCart(idx) { cart.splice(idx,1); renderCart(); }
+    function addManualItemToCart() { const desc=document.getElementById("manualDesc").value.trim(); const cost=parseFloat(document.getElementById("manualCost").value)||0; const price=parseFloat(document.getElementById("manualPrice").value)||0; let tax=parseFloat(document.getElementById("manualTax").value); if(isNaN(tax) || tax===0) tax=DEFAULT_VAT; if(!desc) { showAlert("Missing","Please enter service description"); return; } if(price<=0) { showAlert("Invalid","Amount received must be >0"); return; } cart.push({ id:Date.now()+Math.random(), name:desc, code:`SRV-${Date.now()}`, cost, price, quantity:1, total:price, tax, item_type:'service' }); renderCart(); document.getElementById("manualDesc").value=""; document.getElementById("manualCost").value=""; document.getElementById("manualPrice").value=""; document.getElementById("manualTax").value=DEFAULT_VAT; showAlert("Added",`${desc} added to cart`); }
+
+    function showCashModal(total) { return new Promise(resolve=>{ pendingCashTotal=total; pendingCashResolve=resolve; document.getElementById("cashTotalDue").innerText=formatCurrency(total); document.getElementById("cashReceivedDisplay").innerText="0"; document.getElementById("changeDisplay").style.display="none"; document.getElementById("confirmCashBtn").disabled=true; cashInputStr="0"; document.getElementById("cashModal").classList.add('show'); }); }
+    function cashKeypadInput(char) { if(char==='.' && cashInputStr.includes('.')) return; if(cashInputStr==="0") cashInputStr=char==='.'?"0.":char; else cashInputStr+=char; document.getElementById("cashReceivedDisplay").innerText=cashInputStr; const rec=parseFloat(cashInputStr)||0; const change=rec-pendingCashTotal; const cd=document.getElementById("changeDisplay"); if(rec>0){ cd.style.display="block"; document.getElementById("changeAmount").innerText=formatCurrency(Math.abs(change)); document.getElementById("confirmCashBtn").disabled=rec<pendingCashTotal; } else { cd.style.display="none"; document.getElementById("confirmCashBtn").disabled=true; } }
+    function cashKeypadClear() { cashInputStr="0"; document.getElementById("cashReceivedDisplay").innerText="0"; document.getElementById("changeDisplay").style.display="none"; document.getElementById("confirmCashBtn").disabled=true; }
+    function cashKeypadEnter() { confirmCashPayment(); }
+    function confirmCashPayment() { const rec=parseFloat(cashInputStr)||0; if(rec<pendingCashTotal){ showAlert("Insufficient","Cash received less than total"); return; } document.getElementById("cashModal").classList.remove('show'); if(pendingCashResolve) pendingCashResolve({ received:rec, change:rec-pendingCashTotal }); pendingCashResolve=null; }
+
+    async function syncSaleToCloud(sale) { try { const params=new URLSearchParams(); params.append('receipt_no',sale.receipt_no); params.append('total_incl',sale.total_incl); await fetch(`${SALES_API_ENDPOINT}?${params.toString()}`); return true; } catch(e){ return false; } }
+
+    async function generatePDFReceipt(sale) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      doc.setFont("helvetica");
+      doc.setFontSize(16);
+      doc.text(COMPANY_NAME, 105, 20, { align: "center" });
+      doc.setFontSize(10);
+      doc.text(COMPANY_ADDRESS, 105, 28, { align: "center" });
+      doc.text(`TIN: ${COMPANY_TIN} | VAT: ${COMPANY_VAT} | Tel: ${COMPANY_PHONE}`, 105, 34, { align: "center" });
+      doc.line(20, 40, 190, 40);
+      doc.setFontSize(10);
+      doc.text(`Receipt No: ${sale.receipt_no}`, 20, 50);
+      doc.text(`Date: ${sale.date} ${sale.time}`, 20, 56);
+      doc.text(`Cashier: ${sale.cashier}`, 20, 62);
+      doc.text(`Customer: ${sale.customer?.name || 'Walk-in Customer'}`, 20, 68);
+      if(sale.customer?.tin) doc.text(`TIN: ${sale.customer.tin}`, 20, 74);
+      doc.line(20, 80, 190, 80);
+      doc.setFontSize(9);
+      let y = 88;
+      doc.text("Description", 20, y);
+      doc.text("Qty", 120, y);
+      doc.text("Price", 150, y);
+      doc.text("Total", 175, y);
+      y += 6;
+      sale.items.forEach(item => {
+        doc.text(item.name.substring(0, 35), 20, y);
+        doc.text("1", 120, y);
+        doc.text(formatCurrency(item.price, sale.currency), 150, y);
+        doc.text(formatCurrency(item.total, sale.currency), 175, y);
+        y += 7;
+        if(y > 200) { doc.addPage(); y = 20; }
+      });
+      doc.line(20, y, 190, y);
+      y += 6;
+      doc.text(`Subtotal (Excl. VAT): ${formatCurrency(sale.total_excl, sale.currency)}`, 140, y);
+      y += 6;
+      doc.text(`VAT (15.5%): ${formatCurrency(sale.total_vat, sale.currency)}`, 140, y);
+      y += 6;
+      doc.setFontSize(11);
+      doc.text(`TOTAL: ${formatCurrency(sale.total_incl, sale.currency)}`, 140, y);
+      y += 8;
+      if(sale.payment_method === 'CASH') {
+        doc.text(`Cash Received: ${formatCurrency(sale.cash_received, sale.currency)}`, 140, y);
+        y += 6;
+        doc.text(`Change: ${formatCurrency(sale.change, sale.currency)}`, 140, y);
+        y += 8;
+      }
+      doc.text(`Payment Method: ${sale.payment_method}`, 140, y);
+      y += 12;
+      doc.setFontSize(9);
+      doc.text("Banking Details:", 20, y);
+      y += 5;
+      doc.text(`${BANK_NAME}: ${BANK_ACCOUNT_NAME}`, 20, y);
+      y += 5;
+      doc.text(`Account Number: ${BANK_ACCOUNT_NUMBER}`, 20, y);
+      y += 5;
+      doc.text(`Branch: ${BANK_BRANCH}`, 20, y);
+      y += 10;
+      doc.setFontSize(9);
+      doc.text("Thank you for your business. This is a fiscalized receipt.", 105, y+5, { align: "center" });
+      doc.save(`Receipt_${sale.receipt_no}.pdf`);
+    }
+
+    async function completeSale() {
+      if(isProcessingSale) return;
+      if(cart.length===0){ showAlert("Empty Cart","Add items to cart"); return; }
+      const vc=calculateCartVAT();
+      const total=vc.inclusive;
+      if(!await showConfirm("Confirm Sale",`Total: ${formatCurrency(total)}. Complete?`)) return;
+      if(selectedPaymentMethod==='CASH'){ const cr=await showCashModal(total); if(!cr) return; cashReceived=cr.received; changeAmount=cr.change; } else { cashReceived=total; changeAmount=0; }
+      isProcessingSale=true; blockEverything("Processing sale...");
+      try {
+        const now=new Date();
+        const receiptNo=`INV-${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+        const customer={ name:document.getElementById("customerName").value.trim()||"Walk-in Customer", tin:document.getElementById("customerTin").value.trim(), vat:document.getElementById("customerVat").value.trim(), address:document.getElementById("customerAddress").value.trim(), email:document.getElementById("customerEmail").value.trim(), phone:document.getElementById("customerPhone").value.trim() };
+        const sale={ receipt_no:receiptNo, date:now.toISOString().split('T')[0], time:now.toLocaleTimeString(), cashier:currentUser?.username||"Admin", branch:currentBranch, customer, items:cart.map(i=>({ name:i.name, code:i.code, quantity:1, price:i.price, cost:i.cost, tax:i.tax, total:i.price })), total_excl:vc.exclusive, total_vat:vc.vat, total_incl:vc.inclusive, profit:cart.reduce((s,i)=>s+(i.price-i.cost),0), payment_method:selectedPaymentMethod, currency:displayCurrency, cash_received:cashReceived, change:changeAmount, synced:false, timestamp:Date.now() };
+        await saveToDB('sales', sale);
+        if(navigator.onLine) await syncSaleToCloud(sale);
+        cart=[]; renderCart(); await loadAllSales(); await updateSalesTarget();
+        unblockEverything(); isProcessingSale=false;
+        showAlert("Sale Complete",`Receipt: ${receiptNo}\nTotal: ${formatCurrency(total)}`);
+        await generatePDFReceipt(sale);
+      } catch(e){ unblockEverything(); isProcessingSale=false; showAlert("Error",e.message); }
+    }
+
+    async function loadAllSales() { const sales=await getFromDB('sales'); allSales=Array.isArray(sales)?sales:Object.values(sales||{}); const cashups=await getFromDB('cashups'); allCashups=Array.isArray(cashups)?cashups:Object.values(cashups||{}); renderSalesTable(allSales.filter(s=>s)); renderVarianceTable(); }
+    function renderSalesTable(sales) { const tbody=document.getElementById("salesTableBody"); if(!tbody) return; let sumExcl=0, sumVat=0, sumIncl=0, sumProfit=0; tbody.innerHTML=sales.slice(0,200).map(s=>{ sumExcl+=s.total_excl||0; sumVat+=s.total_vat||0; sumIncl+=s.total_incl||0; sumProfit+=s.profit||0; return `<tr onclick="showSaleDetail('${s.receipt_no}')"><tr>${s.receipt_no}</td>${s.date}</td>${s.cashier}</td>${s.customer?.name||'Walk-in'}</td>${formatCurrency(s.total_excl,s.currency)}</td><td>${formatCurrency(s.total_vat,s.currency)}</td><td>${formatCurrency(s.total_incl,s.currency)}</td></tr>`; }).join(''); document.getElementById("summaryExcl").innerHTML=formatCurrency(sumExcl); document.getElementById("summaryVat").innerHTML=formatCurrency(sumVat); document.getElementById("summaryIncl").innerHTML=formatCurrency(sumIncl); document.getElementById("summaryProfit").innerHTML=formatCurrency(sumProfit); }
+    function renderVarianceTable() { const tbody=document.getElementById("varianceTableBody"); if(!tbody) return; tbody.innerHTML=allCashups.slice(0,100).map(c=>{ const varClass=c.variance>=0?'variance-positive':'variance-negative'; const sign=c.variance>=0?'+':''; return `<tr><td>${c.date}</td><td>${c.cashier}</td><td>${formatCurrency(c.expected)}</td><td>${formatCurrency(c.declared)}</td><td class="${varClass}">${sign}${formatCurrency(Math.abs(c.variance))}</td></tr>`; }).join(''); }
+    async function showSaleDetail(receiptNo) { const sale=allSales.find(s=>s.receipt_no===receiptNo); if(!sale) return; currentSaleDetail=sale; const itemsHtml=sale.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:0.25rem 0;"><span>${escapeHtml(i.name)} x1</span><span>${formatCurrency(i.total,sale.currency)}</span></div>`).join(''); document.getElementById("saleDetailBody").innerHTML=`<div><strong>Receipt:</strong> ${sale.receipt_no}</div><div><strong>Date:</strong> ${sale.date} ${sale.time}</div><div><strong>Cashier:</strong> ${sale.cashier}</div><div><strong>Customer:</strong> ${sale.customer?.name||'Walk-in'}</div><hr>${itemsHtml}<hr><div><strong>Subtotal Excl. VAT:</strong> ${formatCurrency(sale.total_excl,sale.currency)}</div><div><strong>VAT (15.5%):</strong> ${formatCurrency(sale.total_vat,sale.currency)}</div><div><strong>Total:</strong> ${formatCurrency(sale.total_incl,sale.currency)}</div><div><strong>Payment:</strong> ${sale.payment_method}</div>${sale.payment_method==='CASH'?`<div><strong>Cash Received:</strong> ${formatCurrency(sale.cash_received,sale.currency)}</div><div><strong>Change:</strong> ${formatCurrency(sale.change,sale.currency)}</div>`:''}<hr><div><strong>Banking Details:</strong></div><div>${BANK_NAME}: ${BANK_ACCOUNT_NAME}</div><div>Account: ${BANK_ACCOUNT_NUMBER}</div><div>Branch: ${BANK_BRANCH}</div>`; document.getElementById("saleDetailModal").classList.add('show'); }
+    async function downloadReceiptPDF() { if(currentSaleDetail) await generatePDFReceipt(currentSaleDetail); }
+    function applyFilters() { let filtered=allSales; const sd=document.getElementById("startDate").value; const ed=document.getElementById("endDate").value; if(sd) filtered=filtered.filter(s=>s.date>=sd); if(ed) filtered=filtered.filter(s=>s.date<=ed); renderSalesTable(filtered); }
+    function exportSalesReport() { let csv="Receipt No,Date,Cashier,Customer,Total Excl,VAT,Total Incl,Profit,Currency\n"; allSales.forEach(s=>{ csv+=`${s.receipt_no},${s.date},${s.cashier},"${s.customer?.name||'Walk-in'}",${s.total_excl},${s.total_vat},${s.total_incl},${s.profit||0},${s.currency}\n`; }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`sales_report_${new Date().toISOString().split('T')[0]}.csv`; a.click(); URL.revokeObjectURL(a.href); }
+    async function updateSalesTarget() { const now=new Date(); const month=`${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}`; const total=allSales.filter(s=>s.date.startsWith(month)).reduce((a,b)=>a+b.total_incl,0); const percent=Math.min((total/SALES_TARGET)*100,100); document.getElementById("targetProgressFill").style.width=`${percent}%`; document.getElementById("targetPercent").innerText=`${percent.toFixed(2)}%`; }
+    async function openCashup() { const cashier=currentUser?.username||"Admin"; const today=new Date().toISOString().split('T')[0]; const todaySales=allSales.filter(s=>s.cashier===cashier && s.date===today); const expected=todaySales.reduce((s,sum)=>s+sum.total_incl,0); document.getElementById("cashupExpected").innerHTML=`<strong>Transactions:</strong> ${todaySales.length}<br><strong>Expected Total:</strong> ****`; window._cashupExpected=expected; document.getElementById("cashAtHandInput").value=""; document.getElementById("bankInput").value=""; document.getElementById("cashupModal").classList.add('show'); }
+    async function completeCashup() { const cashAtHand=parseFloat(document.getElementById("cashAtHandInput").value)||0; const bank=parseFloat(document.getElementById("bankInput").value)||0; const declared=cashAtHand+bank; const variance=declared-(window._cashupExpected||0); const cashup={ date:new Date().toISOString().split('T')[0], time:new Date().toLocaleTimeString(), cashier:currentUser?.username||"Admin", expected:window._cashupExpected, cashAtHand, bank, declared, variance }; await saveToDB('cashups', cashup); await loadAllSales(); closeModal('cashupModal'); showAlert("Cashup Complete",`Expected: ${formatCurrency(window._cashupExpected)}\nDeclared: ${formatCurrency(declared)}\nVariance: ${variance>=0?'+':''}${formatCurrency(Math.abs(variance))}`); }
+    function openReports() { document.getElementById("reportsPanel").classList.add('show'); loadAllSales(); }
+    function closeReports() { document.getElementById("reportsPanel").classList.remove('show'); }
+    function switchView(view) { if(view==='pos') closeReports(); else if(view==='reports') openReports(); document.querySelectorAll('.footer-item').forEach((el,i)=>{ el.classList.toggle('active',(view==='pos'&&i===0)||(view==='reports'&&i===1)); }); }
+    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+    async function attemptLogin(u,p) { const users=await getFromDB('users'); const user=(users||[]).find(us=>us.username===u && String(us.Password)===String(p)); if(!user) return { success:false }; if(user.Branch && user.Branch.includes(',')) return { success:true, user, branches:user.Branch.split(',').map(b=>b.trim()) }; return { success:true, user }; }
+    function completeLogin(user) { currentUser=user; currentBranch=user.Branch||"Main"; localStorage.setItem("username",user.username); document.getElementById("loginContainer").style.display="none"; document.getElementById("appContainer").style.display="block"; document.getElementById("welcomeMessage").innerText=user.username; document.getElementById("userAvatar").innerText=user.username.charAt(0).toUpperCase(); if((user.Role||'').toLowerCase()==='admin') document.getElementById("reportBtn").style.display="inline-block"; document.getElementById("logoutBtn").onclick=()=>{ localStorage.clear(); location.reload(); }; loadAllSales(); updateSalesTarget(); }
+
+    document.addEventListener('DOMContentLoaded',async()=>{ await initIndexedDB(); await loadUsersFromAPI(); const saved=localStorage.getItem("username"); if(saved){ const users=await getFromDB('users'); const found=users.find(u=>u.username===saved); if(found) completeLogin(found); } document.getElementById("syncStatus").style.display="none"; window.addEventListener('online',()=>document.getElementById("offlineIndicator").style.display="none"); window.addEventListener('offline',()=>document.getElementById("offlineIndicator").style.display="block"); });
+    document.getElementById("loginForm").addEventListener("submit",async(e)=>{ e.preventDefault(); const u=document.getElementById("username").value.trim(); const p=document.getElementById("password").value.trim(); const err=document.getElementById("error-msg"); const result=await attemptLogin(u,p); if(result.success){ if(result.branches){ window._branchUser=result.user; document.getElementById("branchSelect").innerHTML=result.branches.map(b=>`<option>${b}</option>`).join(''); document.getElementById("branchModal").classList.add('show'); } else { completeLogin(result.user); } } else { err.style.display="block"; } });
+    window.confirmBranch=()=>{ const branch=document.getElementById("branchSelect").value; if(window._branchUser){ window._branchUser.Branch=branch; completeLogin(window._branchUser); window._branchUser=null; } closeModal('branchModal'); };
+
+    window.addManualItemToCart=addManualItemToCart; window.completeSale=completeSale; window.removeFromCart=removeFromCart; window.setCurrency=setCurrency; window.setPaymentMethod=setPaymentMethod; window.openReports=openReports; window.closeReports=closeReports; window.switchView=switchView; window.applyFilters=applyFilters; window.openCashup=openCashup; window.completeCashup=completeCashup; window.cashKeypadInput=cashKeypadInput; window.cashKeypadClear=cashKeypadClear; window.cashKeypadEnter=cashKeypadEnter; window.confirmCashPayment=confirmCashPayment; window.confirmOK=confirmOK; window.confirmCancel=confirmCancel; window.closeModal=closeModal; window.exportSalesReport=exportSalesReport; window.showSaleDetail=showSaleDetail; window.downloadReceiptPDF=downloadReceiptPDF;
+  </script>
+</body>
+</html>
